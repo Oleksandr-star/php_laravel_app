@@ -2,8 +2,9 @@
     <nav>
         <a href="{{ route('welcome') }}">Головна</a>
         <a href="{{ route('about') }}">Про нас</a>
+        
         @auth
-            <a href="{{ route('catalog') }}">Каталог</a>
+            <a href="{{ route('tasks.index') }}">Завдання</a>
             <a href="{{ route('contact') }}">Контакти</a> 
             <a href="{{ route('dashboard') }}">Профіль</a>  
         @endauth

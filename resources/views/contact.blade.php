@@ -1,21 +1,28 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Контакти</title>
-    @vite('resources/css/app.css')
-</head>
-<body>
-    @include('layouts.header')
+@extends('layouts.app')
 
-    <h1>Контакти</h1>
-    <p>Зв’яжіться з нами за допомогою наступної інформації:</p>
-    <ul>
-        <li>Email: support@example.com</li>
-        <li>Телефон: +38 050 123 4567</li>
-    </ul>
+@section('title', 'Контакти')
 
-    @include('layouts.footer')
-</body>
-</html>
+@section('content')
+    @vite('resources/css/contacts.css')
+    <div class="contact-container">
+        <h1>Контакти</h1>
+        <p>Зв'яжіться з нами за допомогою наступної форми:</p>
+        
+        <form class="contact-form">
+            @csrf
+            <div class="form-group">
+                <label for="name">Ваше ім'я:</label>
+                <input type="text" name="name" id="name" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="message">Повідомлення:</label>
+                <textarea name="message" id="message" required class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Відправити</button>
+        </form>
+    </div>
+@endsection

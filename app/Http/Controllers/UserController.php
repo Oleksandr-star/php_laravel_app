@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public function showRegistrationForm()
     {
-        return view('register');
+        return view('auth.register');
     }
 
     public function registerUser(Request $request)
@@ -27,6 +28,40 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('register')->with('success', 'Користувача успішно зареєстровано!');
+        Auth::login($user);
+
+        return redirect()->route('dashboard')->with('success', 'Ви успішно зареєструвались!');
+    }
+
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('dashboard')->with('success', 'Ви успішно увійшли!');
+        }
+
+        return back()->withErrors([
+            'email' => 'Невірний email або пароль.',
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('welcome')->with('success', 'Ви успішно вийшли з системи.');
     }
 }
